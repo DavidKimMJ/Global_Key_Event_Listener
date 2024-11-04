@@ -11,20 +11,8 @@ public class GlobalKeyDet implements NativeKeyListener {
 	
 	private HashMap<Integer, Boolean> map = new HashMap<Integer, Boolean>();
 	
-	public static void main(String[] args) {
-		try {
-			GlobalScreen.registerNativeHook();
-		} catch (NativeHookException e) {
-			System.err.println("There was a problem registering the native hook;");
-			System.err.println(e.getMessage());
-			
-			System.exit(1);
-		}
-		GlobalScreen.addNativeKeyListener(new GlobalKeyDet());
-	}
-	
 	public void nativeKeyPressed(NativeKeyEvent nke) {
-		if (map.get(nke.getKeyCode()) == null || map.get(nke.getKeyCode()) == false) {
+		if (map.get(nke.getKeyCode()) == null) {
 			System.out.println("Key Pressed: " + NativeKeyEvent.getKeyText(nke.getKeyCode()));
 			map.put(nke.getKeyCode(), true);
 		}
@@ -46,11 +34,20 @@ public class GlobalKeyDet implements NativeKeyListener {
 		map.remove(nke.getKeyCode());
 	}
 	
-	/* Delete the code below; the code < NativeKeyEvent.getKeyText(nke.getKeyChar()) > from the method nativeKeyTyped does not generate a character matching with the key typed; the key list is not synchronized with the qwerty keyboard.
-	
 	public void nativeKeyTyped(NativeKeyEvent nke) {
-		System.out.println("Key Typed: " + NativeKeyEvent.getKeyText(nke.getKeyChar() - 68));
+		System.out.println("Key Typed: " + nke.getKeyChar());
 	}
-	*/
+	
+	public static void main(String[] args) {
+		try {
+			GlobalScreen.registerNativeHook();
+		} catch (NativeHookException e) {
+			System.err.println("There was a problem registering the native hook;");
+			System.err.println(e.getMessage());
+			
+			System.exit(1);
+		}
+		GlobalScreen.addNativeKeyListener(new GlobalKeyDet());
+	}
 	
 }
